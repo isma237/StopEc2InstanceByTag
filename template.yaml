@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Isma237-StopEC2Instances
+
+  SAM Template to deploy a simple lambda function to stop ec2 instances by TAG
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  StopEC2Instance:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: stop_ec2_instance/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - ec2:StopInstances
+            - ec2:DescribeInstances
+            Resource: '*'
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /stop
+            Method: get
+
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/stop/"
+  HelloWorldFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt StopEC2Instance.Arn
+  StopEC2InstanceIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt StopEC2InstanceRole.Arn
