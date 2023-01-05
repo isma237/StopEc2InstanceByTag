@@ -5,12 +5,71 @@ Description: >
 
   SAM Template to deploy a simple lambda function to stop ec2 instances by TAG
 
+Parameters:
+  SenderEmailAddress:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Adresse email de l'emetteur
+    Default: /Nabisso/MyTicket/Dev/SenderEmailAddress
+  ReceiverEmailAddress:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Adresse email de la personne qui sera notifiée après le traitement
+    Default: /Nabisso/MyTicket/Dev/SenderEmailAddress
+  SESIdentitySenderUser:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: SES Identity for Sender Email User
+    Default: /Nabisso/MyTicket/Dev/SESIdentity
+
+  #EventBrige parameters
+  EventBridgeName:
+    Type: String
+    Description: Le nom de la planification
+    Default: CallerStopEC2Instances
+
+  EventBridgeDescription:
+    Type: String
+    Description: La description que vous spécifiez pour la planification
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
 
 Resources:
+  EventCallFunction:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Description: !Ref EventBridgeDescription
+      Name: !Ref EventBridgeName
+      ScheduleExpression: at(2023-01-05T17:22:00) #cron(30 19 * * *)
+      FlexibleTimeWindow:
+        Mode: FLEXIBLE
+        MaximumWindowInMinutes: 15
+      Target:
+        Arn: !GetAtt StopEC2Instance.Arn
+        RoleArn: !GetAtt CallStopEC2FunctionRole.Arn
+
+  CallStopEC2FunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - scheduler.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+       - PolicyName: EventCallAWSLambdaFunction
+         PolicyDocument:
+           Version: 2012-10-17
+           Statement:
+             - Effect: Allow
+               Action:
+                - lambda:InvokeFunction
+               Resource: !GetAtt StopEC2Instance.Arn
+
   StopEC2Instance:
     Type: AWS::Serverless::Function
     Properties:
@@ -19,6 +78,10 @@ Resources:
       Runtime: python3.9
       Architectures:
         - x86_64
+      Environment:
+        Variables:
+          senderEmail: !Ref SenderEmailAddress
+          receiverEmail: !Ref ReceiverEmailAddress
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -27,22 +90,24 @@ Resources:
             - ec2:StopInstances
             - ec2:DescribeInstances
             Resource: '*'
+        - Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - ses:sendEmail
+            Resource: !Ref SESIdentitySenderUser
       Events:
-        HelloWorld:
+        StopInstance:
           Type: Api
           Properties:
             Path: /stop
             Method: get
 
-
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/stop/"
-  HelloWorldFunction:
+  StopEC2InstanceFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt StopEC2Instance.Arn
   StopEC2InstanceIamRole:
