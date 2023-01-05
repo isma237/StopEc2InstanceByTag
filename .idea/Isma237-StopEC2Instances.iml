@@ -21,7 +21,7 @@
                   <option value="NAMED_IAM" />
                 </list>
               </option>
-              <option name="stackName" value="ec2StopInstancesByTag" />
+              <option name="stackName" value="StopEc2InstanceByTags" />
             </DeploySamConfig>
           </value>
         </entry>
