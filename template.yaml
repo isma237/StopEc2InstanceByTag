@@ -37,6 +37,10 @@ Parameters:
     Type: String
     Description: La description que vous spécifiez pour la planification
 
+  CronPlanification:
+    Type: String
+    Description: La fréquence d'exécution de lancement du programme
+    Default: at(2023-01-06T19:26:00) #cron(30 19 * * *)
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -48,7 +52,7 @@ Resources:
     Properties:
       Description: !Ref EventBridgeDescription
       Name: !Ref EventBridgeName
-      ScheduleExpression: at(2023-01-06T14:35:00) #cron(30 19 * * *)
+      ScheduleExpression: !Ref CronPlanification
       FlexibleTimeWindow:
         Mode: FLEXIBLE
         MaximumWindowInMinutes: 15

@@ -19,20 +19,15 @@ Vous pouvez en apprendre plus en suivant le lien suivant [Tagging AWS resources]
 ## Prérequis
 
 1. Avoir un compte sur AWS
-2. AWS CLI configuré. Vous pouvez suivre ce tutoriel [Installer et configurer(](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
-3. Configurer AWS CLI avec un compte utilisateur possédant les droits de création et d'éxécution des
-services suivants:
-   1. AWS LAMBDA
-   2. AWS SES
-   3. AWS EventBridge
-   4. AWS IAM
-4. Créer un bucket S3 et utiliser le nom de ce bucket dans la commande deploy à la place de **bucket_name**
+2. Avoir un bucket S3 dans lequel seront stockés les artefacts générés par les builds de l'application SAM. Ce bucket 
+sera utilisé lors de la 5ième étape du processus de lancement. 
 
 
 ## Fonctionnement
 
-Pour fonctionner vous devez fournir les variables suivantes lors du déploiement du stack.
+Pour fonctionner vous devez définir les variables suivantes lors du déploiement du stack.
 
+- **CronPlanification** Permet de définir la fréquence d'exécution de lancement du programme: 
 - **SenderEmailAddress:** Adresse email de l'emetteur - cette adresse email doit être validée sur SES
 - **ReceiverEmailAddress:** Adresse email de la personne qui sera notifiée après le traitement
 - **SESIdentitySenderUser:** ARN du SES Identity de l'adresse email de l'émeteur
@@ -40,14 +35,33 @@ Pour fonctionner vous devez fournir les variables suivantes lors du déploiement
 - **TagValuesList:** Liste des valeurs des TAGS séparées par des virgules __ NB -- Le nombre doit êre identique à celui de la variable TagKeysList Exemple tag1,tag2
 - **EventBridgeName:** Nom du service EventBridge
 
-## Les étapes
-Après avoir cloné le projet, il faudra suivre les étapes suivantes:
+## Comment déployer son stack
+Nous verrons comment déployer son stack SAM à partir de Cloud9, l'IDE disponible sur AWS.\
+Vous pouvez également le faire en utilisan SAM CLI. [Cliquez ici](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html) pour accéder à la documentation officielle. 
+Le tutoriel suivant vous aidera à pendre la main rapidement: [Hello Worl Tutorial](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html).
 
-1. Installer SAM CLI sur votre ordinateur [Installation de SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
-3. Builder le projet: `sam build`
-4. Déployer la solution: 
-`sam deploy --template-file ./.aws-sam/build/packaged-template.yaml --stack-name StopEc2InstanceByTags --s3-bucket bucket_name --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --no-execute-changeset --parameter-overrides SenderEmailAddress=senderEmailVariable ReceiverEmailAddress=receiverEmailVariable SESIdentitySenderUser=SesIdentityArnOfSenderEmail TagKeysList=key1,key2 TagValuesList=value1,value2 EventBridgeName=CallerStopEC2Instances EventBridgeDescription="Sample Description"`
+### Les étapes à suivre
+1. Créer un environnement Cloud9 en suivant le [lien](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial-create-environment.html). Vérifier que vous utilisez une instance de type t2.micro pour profiter de l'offre free tiers
+2. Clôner le projet à l'aide de la commande `git clone repository_https_url`
+3. Changer de repertoire: `cd StopEc2InstanceByTag`
+4. Créer un fichier dans lequel seront stockées les variables
+   - `touch .aws/template.json` et coller le contenu ci-dessous
+   ```
+   {
+        "templates": {
+            "template.yaml": {
+                "parameterOverrides": {
+                     "CronPlanification": "cron(30 19 * * *)",
+                     "TagKeysList": "Project",
+                     "TagValuesList": "LAB_TEST",
+                     "EventBridgeDescription": "Sample Description",
+                     "EventBridgeName": "CallerStopEC2Instances"
+                }
+            }
+        }
+   }
+   ```
+5. Sur la gauche, cliquez sur l'icône AWS de cloud9
+6. Faites un clique droit sur Lambda et sélectionner **Deploy SAM Application**. Vous pouvez ensuite suivre les étapes 
 
 
-Vous pouvez également suivre le tutoriel d'introduction à SAM et l'appliquer à ce projet.
-[Hello Worl Tutorial](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
