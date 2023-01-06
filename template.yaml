@@ -40,7 +40,7 @@ Parameters:
   CronPlanification:
     Type: String
     Description: La fréquence d'exécution de lancement du programme
-    Default: at(2023-01-06T19:26:00) #cron(30 19 * * *)
+    #Default: at(2023-01-06T19:26:00) cron(30 19 * * *)
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
