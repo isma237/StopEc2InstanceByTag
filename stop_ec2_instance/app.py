@@ -64,11 +64,17 @@ def lambda_handler(event, context):
         instances = ec2.instances.filter(Filters=filters)
 
         informations = []
+        size = 0
         for instance in instances:
             stop_instance(instance)
+            size = size + 1
             informations.append([instance.id, 'Stopping'])
 
-        data = tabulate(informations, headers=['Instance Id', 'Status'])
+        if size != 0:
+            data = tabulate(informations, headers=['Instance Id', 'Status'])
+        else:
+            data = "Aucune instance repondant aux critères définit n'est en cours d'exécution actuellement"
+
         object = 'Tâche planifiée:: Arrêt des instances: Opération terminée avec succès'
         logger.info(data)
 
