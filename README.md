@@ -19,7 +19,7 @@ Vous pouvez en apprendre plus en suivant le lien suivant [Tagging AWS resources]
 ## Prérequis
 
 1. Avoir un compte sur AWS
-2. AWS CLI configuré. Vous pouvez suivre ce tutoriel [Installer et configurer(](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
+2. AWS CLI configuré. Vous pouvez suivre ce tutoriel [Installer et configurer AWS CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
 3. Configurer AWS CLI avec un compte utilisateur possédant les droits de création et d'éxécution des
 services suivants:
    1. AWS LAMBDA
