@@ -19,6 +19,14 @@ Parameters:
     Description: SES Identity for Sender Email User
     Default: /Nabisso/MyTicket/Dev/SESIdentity
 
+  TagKeysList:
+    Type: String
+    Description: Liste des clés des TAGS séparées par des virgules __ NB Le nombre doit êre identique à celui de la variable TagValuesList. Exemple tag1,tag2
+
+  TagValuesList:
+    Type: String
+    Description: Liste des valeurs des TAGS séparées par des virgules __ NB -- Le nombre doit êre identique à celui de la variable TagKeysList Exemple tag1,tag2
+
   #EventBrige parameters
   EventBridgeName:
     Type: String
@@ -40,7 +48,7 @@ Resources:
     Properties:
       Description: !Ref EventBridgeDescription
       Name: !Ref EventBridgeName
-      ScheduleExpression: at(2023-01-05T17:22:00) #cron(30 19 * * *)
+      ScheduleExpression: at(2023-01-06T13:32:00) #cron(30 19 * * *)
       FlexibleTimeWindow:
         Mode: FLEXIBLE
         MaximumWindowInMinutes: 15
@@ -82,6 +90,8 @@ Resources:
         Variables:
           senderEmail: !Ref SenderEmailAddress
           receiverEmail: !Ref ReceiverEmailAddress
+          tagKeysList: !Ref TagKeysList
+          tagValuesList: !Ref TagValuesList
       Policies:
         - Version: '2012-10-17'
           Statement:
