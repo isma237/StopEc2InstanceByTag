@@ -21,7 +21,7 @@ Parameters:
 
   TagKeysList:
     Type: String
-    Description: Liste des clés des TAGS séparées par des virgules __ NB Le nombre doit êre identique à celui de la variable TagValuesList. Exemple tag1,tag2
+    Description: Liste des clés des TAGS séparées par des virgules __ NB Le nombre doit êre identique à celui de la variable TagValuesList. Exemple key1,key2
 
   TagValuesList:
     Type: String
@@ -48,7 +48,7 @@ Resources:
     Properties:
       Description: !Ref EventBridgeDescription
       Name: !Ref EventBridgeName
-      ScheduleExpression: at(2023-01-06T13:32:00) #cron(30 19 * * *)
+      ScheduleExpression: at(2023-01-06T14:35:00) #cron(30 19 * * *)
       FlexibleTimeWindow:
         Mode: FLEXIBLE
         MaximumWindowInMinutes: 15
@@ -106,17 +106,11 @@ Resources:
             Action:
               - ses:sendEmail
             Resource: !Ref SESIdentitySenderUser
-      Events:
-        StopInstance:
-          Type: Api
-          Properties:
-            Path: /stop
-            Method: get
 
 Outputs:
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/stop/"
+  #HelloWorldApi:
+  #  Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+  #  Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/stop/"
   StopEC2InstanceFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt StopEC2Instance.Arn
