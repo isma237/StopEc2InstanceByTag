@@ -9,15 +9,12 @@ Parameters:
   SenderEmailAddress:
     Type: AWS::SSM::Parameter::Value<String>
     Description: Adresse email de l'emetteur
-    Default: /Nabisso/MyTicket/Dev/SenderEmailAddress
   ReceiverEmailAddress:
     Type: AWS::SSM::Parameter::Value<String>
     Description: Adresse email de la personne qui sera notifiée après le traitement
-    Default: /Nabisso/MyTicket/Dev/SenderEmailAddress
   SESIdentitySenderUser:
     Type: AWS::SSM::Parameter::Value<String>
     Description: SES Identity for Sender Email User
-    Default: /Nabisso/MyTicket/Dev/SESIdentity
 
   TagKeysList:
     Type: String
