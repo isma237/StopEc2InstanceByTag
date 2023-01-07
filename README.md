@@ -3,7 +3,7 @@
 
 ### Pourquoi ?
 Si comme moi, il vous arrive d'oublier d'arrêter d'éteindre 
-vos instances EC2 après avoir terminés des labs, alors ce projet pourrait vous interesser. 
+vos instances EC2 après avoir terminé des labs, alors ce projet pourrait vous interesser. 
 
 Cette application construite sur la base de SAM (Serverless Application 
 Model) vous permettra de **planifier l'arrêt** des instances **sélectionnées
