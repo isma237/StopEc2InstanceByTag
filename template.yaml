@@ -35,6 +35,7 @@ Parameters:
   S3BucketName:
     Type: String
     Description: Le nom du bucket dans lequel seront stockés les différents build
+    Default: iglambdasambucket
 
     #Default: at(2023-01-06T19:26:00) cron(30 19 * * *)
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
@@ -94,6 +95,7 @@ Resources:
       Layers:
         - !Ref PopulateLayers
       Policies:
+        - AWSLambda_ReadOnlyAccess
         - Version: '2012-10-17'
           Statement:
           - Effect: Allow
