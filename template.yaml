@@ -31,6 +31,11 @@ Parameters:
   CronPlanification:
     Type: String
     Description: La fréquence d'exécution de lancement du programme
+
+  S3BucketName:
+    Type: String
+    Description: Le nom du bucket dans lequel seront stockés les différents build
+
     #Default: at(2023-01-06T19:26:00) cron(30 19 * * *)
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -86,6 +91,8 @@ Resources:
           receiverEmail: !Ref ReceiverEmailAddress
           tagKeysList: !Ref TagKeysList
           tagValuesList: !Ref TagValuesList
+      Layers:
+        - !Ref PopulateLayers
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -101,6 +108,14 @@ Resources:
               - ses:sendEmail
             Resource: !Ref SESIdentitySenderUser
 
+  PopulateLayers:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      Content:
+        S3Bucket: !Ref S3BucketName
+        S3Key: populate_layer.zip
+      CompatibleRuntimes:
+        - python3.9
 Outputs:
   StopEC2InstanceFunction:
     Description: "Hello World Lambda Function ARN"
