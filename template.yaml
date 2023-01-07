@@ -21,17 +21,13 @@ Parameters:
 
   TagKeysList:
     Type: String
-    Description: Liste des clés des TAGS séparées par des virgules __ NB Le nombre doit êre identique à celui de la variable TagValuesList. Exemple key1,key2
+    Description: Liste des clés des TAGS séparées par des virgules __ NB--
+    Le nombre doit êre identique à celui de la variable TagValuesList. Exemple key1,key2
 
   TagValuesList:
     Type: String
-    Description: Liste des valeurs des TAGS séparées par des virgules __ NB -- Le nombre doit êre identique à celui de la variable TagKeysList Exemple tag1,tag2
-
-  #EventBrige parameters
-  EventBridgeName:
-    Type: String
-    Description: Le nom de la planification
-    Default: CallerStopEC2Instances
+    Description: Liste des valeurs des TAGS séparées par des virgules __ NB --
+    Le nombre doit êre identique à celui de la variable TagKeysList Exemple tag1,tag2
 
   EventBridgeDescription:
     Type: String
@@ -51,7 +47,6 @@ Resources:
     Type: AWS::Scheduler::Schedule
     Properties:
       Description: !Ref EventBridgeDescription
-      Name: !Ref EventBridgeName
       ScheduleExpression: !Ref CronPlanification
       FlexibleTimeWindow:
         Mode: FLEXIBLE
