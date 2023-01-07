@@ -105,9 +105,6 @@ Resources:
             Resource: !Ref SESIdentitySenderUser
 
 Outputs:
-  #HelloWorldApi:
-  #  Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-  #  Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/stop/"
   StopEC2InstanceFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt StopEC2Instance.Arn
