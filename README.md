@@ -43,14 +43,13 @@ Le tutoriel suivant vous aidera à pendre la main rapidement: [Hello Worl Tutori
 
 ### Les étapes à suivre
 1. Créer un environnement Cloud9 en suivant le [lien](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial-create-environment.html). Vérifier que vous utilisez une instance de type t2.micro pour profiter de l'offre free tiers
-2. Configurer AWS CLI: Suivre le tutoriel suivant [Configurer AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
 3. Installer Git sur votre environnement Cloud9. Vous pouvez suivre le tutoriel suivant [Installer Git](https://www.digitalocean.com/community/tutorials/how-to-install-git-on-centos-7)
 4. Clôner le projet à l'aide de la commande `git clone https://github.com/isma237/StopEc2InstanceByTag.git`
 5. Changer de repertoire: `cd StopEc2InstanceByTag`
 6. Cliquer sur l'icône AWS dans la barre latérale gauche de  cloud9
 7. Dans les options, faites un clique droit sur LAMBDA et choisir **Deploy SAM Application** et suiver le processus
    1. Choisir le template: Sélectionner `template.yaml`
-   2. Accepter de configurer les variables. Cloud9  générera un fichier contenant la liste des variables qui n'ont 
+   2. Vous serez ensuite inviter a configurer les variables. Choississer Choisisser l'option *Configure*. Cloud9  générera un fichier contenant la liste des variables qui n'ont 
    aucune valeur par défault. Vous pouvez vous servir de l'exemple ci-dessous pour configurer votre déploiement
    ```
    {
@@ -68,6 +67,7 @@ Le tutoriel suivant vous aidera à pendre la main rapidement: [Hello Worl Tutori
    }
    ```
    3. Choisir le bucket S3 dans lequel les artefacts seront stockés
-   4. Suivre le processus de création et de déploiement depuis l'onglet AWS Toolkit
+   4. Donner un nom au déploiement
+   5. Suivre le processus de création et de déploiement depuis l'onglet AWS Toolkit
    
 
