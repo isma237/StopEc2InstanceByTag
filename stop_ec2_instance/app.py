@@ -70,15 +70,14 @@ def lambda_handler(event, context):
             size = size + 1
             informations.append([instance.id, 'Stopping'])
 
+        object = 'Tâche planifiée:: Arrêt des instances: Opération terminée avec succès'
         if size != 0:
             data = tabulate(informations, headers=['Instance Id', 'Status'])
+            sendMail(senderEmail, receiverEmail, object, data)
         else:
             data = "Aucune instance repondant aux critères définit n'est en cours d'exécution actuellement"
 
-        object = 'Tâche planifiée:: Arrêt des instances: Opération terminée avec succès'
         logger.info(data)
-
-        sendMail(senderEmail, receiverEmail, object, data)
         return {
             "statusCode": 200,
             "body": json.dumps({
