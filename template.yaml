@@ -35,10 +35,8 @@ Parameters:
   S3BucketName:
     Type: String
     Description: Le nom du bucket dans lequel seront stockés les différents build
-    Default: iglambdasambucket
+    #Default: Excemple at(2023-01-06T19:26:00) ou encore cron(30 19 * * *)
 
-    #Default: at(2023-01-06T19:26:00) cron(30 19 * * *)
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
@@ -120,7 +118,7 @@ Resources:
         - python3.9
 Outputs:
   StopEC2InstanceFunction:
-    Description: "Hello World Lambda Function ARN"
+    Description: "ARN of StopEC2InstanceFunction"
     Value: !GetAtt StopEC2Instance.Arn
   StopEC2InstanceIamRole:
     Description: "Implicit IAM Role created for Hello World function"

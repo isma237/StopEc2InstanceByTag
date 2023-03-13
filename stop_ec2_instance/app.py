@@ -59,8 +59,6 @@ def lambda_handler(event, context):
             'Values': ['running']
         })
 
-        print(filters)
-
         instances = ec2.instances.filter(Filters=filters)
 
         informations = []
@@ -75,7 +73,7 @@ def lambda_handler(event, context):
             data = tabulate(informations, headers=['Instance Id', 'Status'])
             sendMail(senderEmail, receiverEmail, object, data)
         else:
-            data = "Aucune instance repondant aux critères définit n'est en cours d'exécution actuellement"
+            data = "Aucune instance repondant aux critères définis n'est en cours d'exécution actuellement"
 
         logger.info(data)
         return {
