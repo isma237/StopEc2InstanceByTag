@@ -1,25 +1,27 @@
 
 # Digitruc: StopEc2InstancesByTagsDefinition
 
-### Pourquoi ?
-Si comme moi, il vous arrive d'oublier d'arrêter 
-vos instances EC2 après avoir terminé des labs, alors ce projet pourrait vous interesser. 
+### Objectif
 
-Cette application construite sur la base de SAM (Serverless Application 
-Model) vous permettra de **planifier l'arrêt** des instances **sélectionnées
-sur la base des TAGS**. 
+Laisser des instances en cours de fonctionnement peut entrainer des frais supplémentaires. Une bonne pratique consister à 
+les arrêter lorsqu'elles ne sont plus utilisées. J'ai créés ce projet afin d'automatiser ce processus. 
 
-Les TAGS permettent d'apporter des informations supplémentaires à vos ressources sur AWS. 
-Une fois maitrisé, ce sera un compagnon idéal pour gérer des grosses infrastructures.
+
+Cette application construite sur la base de SAM (Serverless Application Model) vous permettra de **planifier l'arrêt** 
+des instances sélectionnées **sur la base des TAGS**. 
+
+Les TAGS apportent des informations supplémentaires à vos ressources AWS. Une fois maitrisé, ce sera un compagnon idéal pour gérer de grosses infrastructures.
 Vous pouvez en apprendre plus en suivant le lien suivant [Tagging AWS resources](https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html)
 
+## Limite: Disponibilité des services dans les régions AWS
+Sur AWS certaines ressources sont dites régionales. Il faudra vérifier que les ressources qui seront créées (voir le fichier *template.yaml*)
+sont bien disponibles dans la région dans laquelle vous souhaitez effectuer le déploiement. 
 
 ## Prérequis
 
 1. Avoir un compte sur AWS
 2. Avoir un bucket S3 dans lequel seront stockés les artefacts générés par les builds de l'application SAM. Ce bucket 
-sera utilisé dans la dernière étape du processus de lancement.
-
+sera utilisé lors de la dernière étape du processus de lancement.
 
 ## Fonctionnement
 
@@ -34,7 +36,9 @@ Pour fonctionner vous devez définir les variables suivantes lors du déploiemen
 - **TagValuesList:** Liste des valeurs des TAGS séparées par des virgules __ NB -- Le nombre de valeurs doit êre identique à celui de la variable TagKeysList Exemple tag1,tag2
 
 ## Bonne pratique
-Pour des raisons de sécurité, il n'est pas recommandé de stocker les données sensibles en clair dans vos fichiers de travails. 
+
+Pour des raisons de sécurité, il n'est pas recommandé de stocker les données sensibles directement dans vos fichiers sources.
+La bonne approche consiste à utiliser un outil de gestion des secrets. 
 Les données des variables **SenderEmailAddress**, **ReceiverEmailAddress** et **SESIdentitySenderUser** doivent être stokées 
 sur SSM plus précisément sur **Parameter Store**. [Cliquez ici](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-su-create.html)
 pour apprendre à créer des entrées. 
